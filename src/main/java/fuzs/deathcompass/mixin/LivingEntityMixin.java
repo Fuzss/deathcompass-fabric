@@ -20,8 +20,8 @@ public abstract class LivingEntityMixin extends Entity {
     }
 
     @Inject(method = "dropAllDeathLoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;shouldDropLoot()Z"), cancellable = true, locals = LocalCapture.CAPTURE_FAILHARD)
-    protected void dropAllDeathLoot(DamageSource damageSource, CallbackInfo callbackInfo, boolean recentlyHit, Entity attacker, int lootingLevel) {
-        if (!LivingDropsCallback.EVENT.invoker().onLivingDrops((LivingEntity) (Object) this, damageSource, lootingLevel, recentlyHit)) {
+    protected void dropAllDeathLoot(DamageSource damageSource, CallbackInfo callbackInfo, Entity attacker, int lootingLevel, boolean recentlyHitByPlayer) {
+        if (!LivingDropsCallback.EVENT.invoker().onLivingDrops((LivingEntity) (Object) this, damageSource, lootingLevel, recentlyHitByPlayer)) {
             this.dropEquipment();
             callbackInfo.cancel();
         }

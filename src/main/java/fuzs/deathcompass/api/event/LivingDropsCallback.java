@@ -6,9 +6,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
 public interface LivingDropsCallback {
-    Event<LivingDropsCallback> EVENT = EventFactory.createArrayBacked(LivingDropsCallback.class, callbacks -> (LivingEntity entity, DamageSource source, int lootingLevel, boolean recentlyHit) -> {
+    Event<LivingDropsCallback> EVENT = EventFactory.createArrayBacked(LivingDropsCallback.class, callbacks -> (LivingEntity entity, DamageSource source, int lootingLevel, boolean recentlyHitByPlayer) -> {
         for (LivingDropsCallback callback : callbacks) {
-            if (!callback.onLivingDrops(entity, source, lootingLevel, recentlyHit)) {
+            if (!callback.onLivingDrops(entity, source, lootingLevel, recentlyHitByPlayer)) {
                 return false;
             }
         }
@@ -20,8 +20,8 @@ public interface LivingDropsCallback {
      * @param entity the entity dropping the loot
      * @param source the damage source that killed <code>entity</code>
      * @param lootingLevel level of looting on the killing weapon
-     * @param recentlyHit access to lastHurtByPlayerTime field
+     * @param recentlyHitByPlayer does this count as a player kill
      * @return false to cancel any drops (including xp) just like disabling doMobLoot gamerule, i.e. saddles from pigs and player inventory will still be dropped
      */
-    boolean onLivingDrops(LivingEntity entity, DamageSource source, int lootingLevel, boolean recentlyHit);
+    boolean onLivingDrops(LivingEntity entity, DamageSource source, int lootingLevel, boolean recentlyHitByPlayer);
 }
